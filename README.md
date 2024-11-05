@@ -184,3 +184,40 @@ docker network rm my-network
 ```
 
 
+## Volume
+
+### Listing Volumes
+
+To list all existing Docker volumes, use the following command:
+
+```bash
+docker volume ls
+```
+
+### Creating a New Volume
+
+To create a new Docker volume, use the following command:
+
+```bash
+docker volume create my-volume
+docker volume ls
+docker volume inspect my-volume
+```
+
+### Deleting a Volume
+
+To delete an existing Docker volume, use the following command. This example removes the volume named `my-volume`.
+
+```bash
+docker volume rm my-volume
+```
+
+### Deleting All Unused Volumes
+
+To delete all unused Docker volumes and free up space, use the following command:
+
+```bash
+docker volume prune
+```
+
+
