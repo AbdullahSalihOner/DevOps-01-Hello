@@ -122,4 +122,65 @@ docker pull asoner01/devops-01-hello:latest
 docker pull asoner01/devops-01-hello
 ```    
 
+## Network
+
+### Listing Networks
+
+To list all existing Docker networks, use the following command:
+
+```bash
+docker network ls
+```
+
+### Changing Network Type with the --driver Parameter
+
+To create a Docker network with a specific type, use the `--driver` parameter. For example, to create a network with the `host` driver, use the following command:
+
+```bash
+docker network create --driver host
+```
+
+### Network Information and Containers Using the Network
+
+To view detailed information about a specific Docker network, including the containers connected to it, use the following command:
+
+```bash
+docker network inspect my-network
+```
+
+### Adding a Container to a Network
+
+To connect a container to an existing Docker network, use the following `docker network connect` command. This example connects multiple containers to the `my-network` network.
+
+```bash
+docker network connect my-network my-app1
+docker network connect my-network my-app2
+docker network connect my-network my-app3
+docker network connect my-network my-app4
+```
+
+### Network Information and Containers Using the Network
+
+To view detailed information about a specific Docker network, including the containers connected to it, use the following command:
+
+```bash
+docker network inspect my-network
+```
+
+### Removing a Container from a Network
+
+To disconnect a container from an existing Docker network, use the following `docker network disconnect` command. This example disconnects `my-app4` from the network.
+
+```bash
+docker network disconnect my-network my-app4
+```
+
+### Deleting a Network
+
+To delete an existing Docker network, use the following command. This example removes the network named `my-network`.
+
+```bash
+docker network rm my-network
+```
+
 
