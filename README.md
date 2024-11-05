@@ -220,4 +220,46 @@ To delete all unused Docker volumes and free up space, use the following command
 docker volume prune
 ```
 
+## Docker Compose
 
+### Starting Services with Docker Compose
+
+To start services defined in a `docker-compose.yml` file, use the following command:
+
+```bash
+docker compose -f docker-compose.yml up
+docker ps
+docker container ls
+docker-compose logs mongo
+docker-compose logs mongo
+docker compose -f docker-compose.yml down
+```
+
+## docker-compose.yml Configuration
+
+The following `docker-compose.yml` file sets up a MongoDB service and a Mongo Express interface for managing MongoDB through a web-based UI.
+
+```yaml
+# Use root/example as user/password credentials
+version: '3.1'
+
+services:
+
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 123456
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: 123456
+      ME_CONFIG_MONGODB_URL: mongodb://root:123456@mongo:27017/
+      ME_CONFIG_BASICAUTH: false
+```
