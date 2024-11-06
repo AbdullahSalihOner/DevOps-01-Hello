@@ -5,7 +5,7 @@ metadata:
 spec:
   selector:
     app: devops-01-hello
-  type: LoadBalancer
+    type: LoadBalancer
   ports:
     - port: 8087
       targetPort: 8080
