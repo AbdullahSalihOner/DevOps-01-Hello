@@ -459,3 +459,138 @@ To delete a specific pod in your Kubernetes cluster, use the following command. 
 kubectl delete pod my-pod8
 ```
 
+### Creating a Kubernetes Pod with a Manifest File
+
+The following YAML configuration file defines a Kubernetes pod named `devops-01-hello`. This pod runs a container using the `asoner01/devops-01-hello` image.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: devops-01-hello
+  labels:
+    name: devops-01-hello
+    type: backend
+    app: hello-service
+    project-name: mydemo
+spec:
+  containers:
+    - name: devops-01-hello
+      image: asoner01/devops-01-hello
+      resources:
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+      ports:
+        - containerPort: 9090
+```
+
+Explanation:
+Metadata: Specifies the pod name (devops-01-hello) and labels for categorizing and identifying the pod.
+Container Configuration:
+ - Image: Uses the asoner01/devops-01-hello image from Docker Hub.
+ - Resources: Limits memory usage to 128Mi and CPU usage to 500m, helping to manage resource consumption within the cluster.
+ - Ports: Exposes port 9090 within the container.
+
+### Creating the Pod
+
+To create this pod, save the YAML configuration as pod.yaml and run the following
+
+```yaml
+kubectl apply -f pod.yaml
+```
+
+### Creating Multiple Kubernetes Pods with a Manifest File
+
+The following YAML configuration file defines two Kubernetes pods: `devops-01-hello` and `my-new-pod2`. Each pod runs a container with specific resource limits and exposed ports.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: devops-01-hello
+  labels:
+    name: devops-01-hello
+    type: backend
+    app: hello-service
+    project-name: mydemo
+spec:
+  containers:
+    - name: devops-01-hello
+      image: asoner01/devops-01-hello
+      resources:
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+      ports:
+        - containerPort: 9090
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-new-pod2
+  labels:
+    name: my-new-pod2
+    type: frontend
+    app: mydemo2-service
+    project-name: mydemo2
+spec:
+  containers:
+    - name: my-new-pod2
+      image: asoner01/devops-01-hello:v001
+      resources:
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+      ports:
+        - containerPort: 9091
+```
+
+
+### Creating a Kubernetes Deployment with a Manifest File
+
+The following YAML configuration file defines a Kubernetes Deployment named `devops-01-hello`. This deployment manages a set of identical pod replicas for scalability and high availability.
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devops-01-hello
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: devops-01-hello
+  template:
+    metadata:
+      labels:
+        app: devops-01-hello
+    spec:
+      containers:
+        - name: devops-01-hello
+          image: asoner01/devops-01-hello:v001
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 9090
+```
+
+### Creating a Kubernetes LoadBalancer Service with a Manifest File
+
+The following YAML configuration file defines a Kubernetes `Service` of type `LoadBalancer`, which distributes traffic to the pods labeled `app: devops-01-hello`.
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: docker-loadbalancer
+spec:
+  selector:
+    app: devops-01-hello
+  type: LoadBalancer
+  ports:
+    - port: 8087
+      targetPort: 8080
+```

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: docker-loadbalancer
+spec:
+  selector:
+    app: devops-01-hello
+  type: LoadBalancer
+  ports:
+    - port: 8087
+      targetPort: 8080

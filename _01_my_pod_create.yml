@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: devops-01-hello
+  labels:
+    name: devops-01-hello
+    type: backend
+    app: hello-service
+    project-name: mydemo
+spec:
+  containers:
+    - name: devops-01-hello
+      image: asoner01/devops-01-hello
+      resources:
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+      ports:
+        - containerPort: 9090
