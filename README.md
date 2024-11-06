@@ -263,3 +263,85 @@ services:
       ME_CONFIG_MONGODB_URL: mongodb://root:123456@mongo:27017/
       ME_CONFIG_BASICAUTH: false
 ```
+
+## ELK Stack Configuration with Docker Compose
+
+The following `docker-compose2.yml` file sets up an ELK stack, which includes Elasticsearch, Logstash, and Kibana, for centralized logging and monitoring.
+
+```yaml
+version: '3'
+
+networks:
+  elk:
+
+volumes:
+  elasticsearch:
+    driver: local
+
+services:
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.2.1
+    environment:
+      http.host: 0.0.0.0
+      transport.host: 127.0.0.1
+    networks:
+      elk: null
+    ports:
+      - 9200:9200
+    restart: unless-stopped
+    volumes:
+      - elasticsearch:/usr/share/elasticsearch/data:rw
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash-oss:6.2.1
+    depends_on:
+      - elasticsearch
+    networks:
+      elk: null
+    ports:
+      - 5044:5044
+    restart: unless-stopped
+    volumes:
+      - ./etc/logstash/pipeline:/usr/share/logstash/pipeline:ro
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana-oss:6.2.1
+    depends_on:
+      - elasticsearch
+    environment:
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+      ELASTICSEARCH_USERNAME: elastic
+      ELASTICSEARCH_PASSWORD: changeme
+    networks:
+      elk: null
+    ports:
+      - 5601:5601
+    restart: unless-stopped
+```
+
+## RabbitMQ Configuration with Docker Compose
+
+The following `docker-compose3.yml` file sets up a RabbitMQ service with management features enabled for easier message queue management.
+
+```yaml
+version: "3.9"
+
+services:
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq-1
+    ports:
+      - 5672:5672       # Port for RabbitMQ connections
+      - 15672:15672     # Port for RabbitMQ management interface
+    environment:
+      - "RABBITMQ_DEFAULT_PASS=admin"
+      - "RABBITMQ_DEFAULT_USER=admin"
+      - "RABBITMQ_DEFAULT_VHOST='vhost'"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
+volumes:
+  rabbitmq_data:
+```
