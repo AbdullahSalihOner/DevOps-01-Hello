@@ -85,7 +85,7 @@ ENTRYPOINT ["java","-jar","devops-hello-app.jar"]
 To build a Docker image of the project, use the following command. This command specifies the path to the JAR file and tags the image with a name and version.
 
 ```bash
-docker build  --build-arg JAR_FILE=target/DevOps-01-hello-1.0.1.jar   --tag    asoner01/devops-01-hello:v001 .
+docker build  --build-arg JAR_FILE=target/DevOps-01-hello-1.0.1.jar   --tag    asoner01/devops-01-hello:v01 .
 docker build  --build-arg JAR_FILE=target/DevOps-01-hello-1.0.2.jar   --tag    asoner01/devops-01-hello:v002 .
 docker build  --build-arg JAR_FILE=target/DevOps-01-hello-1.0.2.jar   --tag    asoner01/devops-01-hello:latest .
 ```
@@ -106,7 +106,7 @@ To create and run containers from the Docker image, use the following commands. 
 ```bash
 docker run -it -d -p 8081:8080 --name my-app1 asoner01/devops-01-hello
 docker run -it -d -p 8082:8080 --name my-app2 asoner01/devops-01-hello
-docker run -it -d -p 8083:8080 --name my-app3 asoner01/devops-01-hello:v001
+docker run -it -d -p 8083:8080 --name my-app3 asoner01/devops-01-hello:v01
 docker run -it -d -p 8084:8080 --name my-app4 asoner01/devops-01-hello:v002
 docker run -it -d -p 8085:8080 --name my-app5 asoner01/devops-01-hello:latest
 ```
@@ -116,7 +116,7 @@ docker run -it -d -p 8085:8080 --name my-app5 asoner01/devops-01-hello:latest
 To download a specific version of the image from Docker Hub, use the `docker pull` command as shown below. You can pull specific versions or the latest version of the image.
 
 ```bash
-docker pull asoner01/devops-01-hello:v001
+docker pull asoner01/devops-01-hello:v01
 docker pull asoner01/devops-01-hello:v002
 docker pull asoner01/devops-01-hello:latest
 docker pull asoner01/devops-01-hello
@@ -345,3 +345,117 @@ services:
 volumes:
   rabbitmq_data:
 ```
+
+
+## Starting Minikube
+
+To start a Minikube cluster, use the following command:
+
+```bash
+minikube start
+```
+
+## Listing All Pods Across Namespaces
+
+To view all running pods across all namespaces in your Kubernetes cluster, use the following command:
+
+```bash
+kubectl get po -A(cloud)
+
+minikube kubectl -- get po -A(local)
+
+```
+
+## Accessing the Minikube Dashboard
+
+To open the Kubernetes dashboard in Minikube, use the following command:
+
+```bash
+minikube dashboard
+```
+This command launches the Kubernetes dashboard in your default web browser, providing a graphical interface for monitoring and managing cluster resources.
+
+The dashboard allows you to view, create, and manage Kubernetes resources such as deployments, services, and pods in a user-friendly way.
+
+
+## Kubernetes
+
+### Checking Kubernetes Version
+
+To display the version of Kubernetes currently in use, both client and server, use the following command:
+
+```bash
+kubectl version
+```
+
+### Listing Pods in the Current Namespace
+
+To view all running pods in the current namespace of your Kubernetes cluster, use the following command:
+
+```bash
+kubectl get pod
+```
+
+### Pulling an Image from Docker Hub and Running it as a Container
+
+To pull an image from Docker Hub and run it as a container on your local machine, use the following command. This example pulls the image `asoner01/devops-01-hello:latest` and runs it as a container named `my-app5`:
+
+```bash
+docker run -it -d -p 8085:8080 --name my-app5 asoner01/devops-01-hello:latest
+```
+
+
+### Running Docker Hub Images as Containers in Kubernetes Pods
+
+To deploy Docker Hub images as containers in Kubernetes pods, use the following `kubectl run` commands. Each command creates a pod with a specified image:
+
+```bash
+kubectl run my-pod1 --image=asoner01/devops-01-hello:latest
+kubectl run my-pod2 --image=asoner01/devops-01-hello:v01
+kubectl run my-pod3 --image=asoner01/devops-01-hello:v002
+kubectl run my-pod4 --image=asoner01/devops-01-hello:v002
+kubectl run my-pod5 --image=asoner01/devops-01-hello:latest
+kubectl run my-pod6 --image=asoner01/devops-01-hello:latest
+kubectl run my-pod7 --image=asoner01/devops-01-hello:v003
+kubectl run my-pod8 --image=mysql
+kubectl run my-pod9 --image=postgres
+```
+
+
+### Retrieving Kubernetes Nodes and Pods
+
+To view information about nodes and pods in your Kubernetes cluster, use the following commands:
+
+#### Viewing Nodes
+
+To list all nodes in the cluster, you can use either of these commands:
+
+```bash
+kubectl get nodes
+kubectl get node
+```
+
+These commands display the nodes in the cluster along with their statuses, roles, and other details.
+
+### Viewing Pods
+
+To list all pods in the current namespace, you can use either of these commands:
+
+```bash
+kubectl get pods
+kubectl get pod
+```
+
+These commands provide a list of pods, showing their names, statuses, and other relevant details. To view pods in all namespaces, add the -A flag:
+```bash
+kubectl get pods -A
+```
+
+### Deleting a Pod in Kubernetes
+
+To delete a specific pod in your Kubernetes cluster, use the following command. This example deletes the pod named `my-pod8`:
+
+```bash
+kubectl delete pod my-pod8
+```
+
